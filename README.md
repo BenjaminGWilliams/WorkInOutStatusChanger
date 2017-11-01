@@ -11,7 +11,10 @@ Commands:
 -h: Brings up help (This), or
 -i: Set to in, or
 -f: Finished for the day, or
--o 'LOCATION','TIME TO ADD': Puts status to 'LOCATION' and adds specified 'TIME'.>"If -o is called must provide 'LOCATION' and 'TIME TO ADD'
+-m: Start Outlook, or
+-o: 'LOCATION','TIME TO ADD': Puts status to 'LOCATION' and adds specified 'TIME'.
+
+"If -o is called must provide 'LOCATION' and 'TIME TO ADD'
 TIME must be in the following list:
 'Qtr' - 15 mins
 'mQtr' - negative 15 mins"
@@ -26,10 +29,10 @@ TIME must be in the following list:
 
 ## Usage example
 
-* Set status to 'IN'
+* Set status to 'IN' and launch Outlook
 
 ```
-"C:\path\to\python\pythonw.exe" "E:\path\to\script\InOut.py" -i
+"C:\path\to\python\pythonw.exe" "E:\path\to\script\InOut.py" -i -m
 ```
 
 * Set status to "Coffee Room" for 15 minutes

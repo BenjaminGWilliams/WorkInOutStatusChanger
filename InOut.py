@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 import sys
 import getopt
 import pycurl
+import subprocess
 
 
 USERNAME = "USERNAME"
@@ -86,6 +87,7 @@ def helpme():
     print "-h: Brings up help (This), or"
     print "-i: Set to in, or"
     print "-f: Finished for the day, or"
+    print "-m: Start Outlook"
     print "-o 'LOCATION','TIME TO ADD': Puts status to 'LOCATION' and adds specified 'TIME'."
     print "If -o is called must provide 'LOCATION' and 'TIME TO ADD'"
     print "TIME must be in the following list:"
@@ -94,6 +96,15 @@ def helpme():
     exit(1)
 
 
+def startoutlook():
+    try:
+        subprocess.Popen("C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE")
+    except:
+        try:
+            subprocess.Popen("C:\Program Files (x86)\Microsoft Office\Office14\OUTLOOK.EXE")
+        except:
+            print("Couldn't find the location of your version of Outlook")
+
 
 
 def main(argv):
@@ -101,22 +112,28 @@ def main(argv):
 
 
     try:
-        opts, args = getopt.getopt(argv, "hifo:")
+        opts, args = getopt.getopt(argv, "hmifo:")
     except getopt.GetoptError:
         helpme()
+    if opts == []:
+        helpme()
     for opt, arg in opts:
+        print opt,arg
 
         if opt == '-h':
             helpme()
         if opt == "-i":
             setin()
-        elif opt == "-o":
+        if opt == "-m":
+            startoutlook()
+        if opt == "-o":
             arguments = arg.split(",")
             if len(arguments) != 2:
                 helpme()
             setout(arguments[0], arguments[1])
-        elif opt == "-f":
+        if opt == "-f":
             setfinishedforday()
+
 
 
 if __name__ == '__main__':
