@@ -97,15 +97,30 @@ def helpme():
 
 
 def startoutlook():
-    try:
-        subprocess.Popen("C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE")
-    except:
+    if not processExists('OUTLOOK.EXE'):
         try:
-            subprocess.Popen("C:\Program Files (x86)\Microsoft Office\Office14\OUTLOOK.EXE")
+            subprocess.Popen("C:\Program Files (x86)\Microsoft Office\Office16\OUTLOOK.EXE")
         except:
-            print("Couldn't find the location of your version of Outlook")
+            try:
+                subprocess.Popen("C:\Program Files (x86)\Microsoft Office\Office14\OUTLOOK.EXE")
+            except:
+                print("Couldn't find the location of your version of Outlook")
 
-
+def processExists(processname):
+    tlcall = 'TASKLIST', '/FI', 'imagename eq %s' % processname
+    # shell=True hides the shell window, stdout to PIPE enables
+    # communicate() to get the tasklist command result
+    tlproc = subprocess.Popen(tlcall, shell=True, stdout=subprocess.PIPE)
+    # trimming it to the actual lines with information
+    tlout = tlproc.communicate()[0].strip().split('\r\n')
+    # if TASKLIST returns single line without processname: it's not running
+    if len(tlout) > 1 and processname in tlout[-1]:
+        #print('process "%s" is running!' % processname)
+        return True
+    else:
+        #print(tlout[0])
+        #print('process "%s" is NOT running!' % processname)
+        return False
 
 def main(argv):
     ''' Performs the required function call depending on the input arguments '''
